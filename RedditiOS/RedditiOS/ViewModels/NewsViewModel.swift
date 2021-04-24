@@ -10,5 +10,7 @@ import Foundation
 struct NewsForView {
     let title: String
     let newsDescription: String
-    //let imageUrl: String
+    let created: Date
+    let author: String
+    let numberOfComments: Int
 }

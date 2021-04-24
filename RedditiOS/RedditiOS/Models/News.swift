@@ -159,7 +159,9 @@ extension Child {
 
 // MARK: - ChildData
 struct ChildData: Codable {
-    let selftext, title: String
+    let selftext, title, author : String
+    let created : Double
+    let num_comments: Int
 }
 
 // MARK: ChildData convenience initializers and mutators
@@ -182,11 +184,17 @@ extension ChildData {
 
     func with(
         selftext: String? = nil,
-        title: String? = nil
+        title: String? = nil,
+        author: String? = nil,
+        created: Double? = nil,
+        num_comments: Int? = nil
     ) -> ChildData {
         return ChildData(
             selftext: selftext ?? self.selftext,
-            title: title ?? self.title
+            title: title ?? self.title,
+            author: author ?? self.author,
+            created: created ?? self.created,
+            num_comments: num_comments ?? self.num_comments
         )
     }
 

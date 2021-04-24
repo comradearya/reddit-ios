@@ -8,18 +8,17 @@
 import Foundation
 
 final class NewsRepository {
+    
     //MARK:- Properties
     
     static let shared = NewsRepository()
-    var news: [News] = []
+    private var news: [NewsForView] = []
     private var dataTask: URLSessionDataTask?
     private let defaultSession = URLSession(configuration: .default)
     
     //MARK:- Private Methods
     
     private func stringUrl() -> String {
-      /*  let date = Date()
-        let currentDate = formatter.string(from: date)*/
         let stringUrl = "http://www.reddit.com/r/pics/search.json?q=news&sort=new"
         
         return stringUrl
@@ -27,50 +26,40 @@ final class NewsRepository {
     
     //MARK:- API Methods
     
-    func fetchNewsList(onCompletion: @escaping (News) -> ()) {
+    func fetchNewsList(onCompletion: @escaping ([NewsForView]) -> ()) {
         dataTask?.cancel()
-        let session = URLSession.shared
         guard let url = URL(string: stringUrl()) else { return }
-        let task = session.dataTask(with: url) { data, response, errror in
+        let task = defaultSession.dataTask(with: url) { data, response, errror in
             guard let httpResponse = response as? HTTPURLResponse,
                   (200...299).contains(httpResponse.statusCode) else {
-               // self.handleServerError(response)
+                // self.handleServerError(response)
                 return
             }
             guard let mime = response?.mimeType, mime == "application/json" else {
                 print("Wrong MIME type!")
                 return
             }
-            if let json = try? JSONSerialization.jsonObject(with: data!, options: []) {
+            do {
+                let decoder = JSONDecoder()
                 do {
-                    let json = try JSONSerialization.jsonObject(with: data!, options: [])
-                    let decoder = JSONDecoder()
-
-                    do {
-                        let news = try decoder.decode(News.self, from: data!)
-                        DispatchQueue.main.async {
-                            onCompletion(news)
-                        }
-                        
-                        print(news)
-                    } catch {
-                        print(error.localizedDescription)
+                    let news = try decoder.decode(News.self, from: data!)
+                    for news in news.data.children {
+                        let newsForView = NewsForView (
+                            title: news.data.title,
+                            newsDescription: news.data.selftext,
+                            created: Date(timeIntervalSince1970: news.data.created),
+                            author: news.data.author,
+                            numberOfComments: news.data.num_comments)
+                        self.news.append(newsForView)
+                    }
+                    DispatchQueue.main.async {
+                        onCompletion(self.news)
                     }
                 } catch {
-                    print("JSON error: \(error.localizedDescription)")
+                    print(error.localizedDescription)
                 }
             }
-            
         }
         task.resume()
-        
     }
 }
-
-//MARK:- Helper
-let formatter: DateFormatter = {
-    let dateFormatter = DateFormatter()
-    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-    dateFormatter.dateFormat = "yyyy-MM-dd"
-    return dateFormatter
-}()
