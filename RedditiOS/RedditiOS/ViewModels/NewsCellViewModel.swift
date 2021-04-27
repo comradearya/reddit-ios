@@ -11,49 +11,52 @@ import UIKit
 class NewsCellViewModel: UITableViewCell{
     
     //MARK: - Outlets
-
+    
     @IBOutlet var cellAuthorLabel: UILabel!
     @IBOutlet var cellTitleLabel: UILabel!
     @IBOutlet var cellDescriptionLabel: UILabel!
     @IBOutlet var cellCreatedLabel: UILabel!
     @IBOutlet var cellCommentsLabel: UILabel!
+    private let imageIconView = UIImageView()
     
     //MARK: - Public Methods
-
+    
     func configureCell(item: NewsForView){
         cellTitleLabel.text = item.title
         cellDescriptionLabel.text = item.newsDescription
-        cellAuthorLabel.text = item.author
+        cellAuthorLabel.text = "Author \(item.author)"
         cellCreatedLabel.text = item.created.timeAgoDisplay()
-        cellCommentsLabel.text = String(item.numberOfComments)
-        
-      /*  ImageController.shared.downloadImage(with: item.imageUrl, completionHandler: { (image, cached) in
-                    self.cellImageView.image = image
-                }, placeholderImage: UIImage(named: "placeholder_for_picture"))
- */
+        cellCommentsLabel.text = "Comments: \(String(item.numberOfComments))"
+       /* ImageController.shared.downloadImage(
+            with: item.imageUrl,
+            completionHandler :{
+                (image, cached) in
+                self.imageIconView.image = image },
+            placeholderImage: UIImage(
+                named: "placeholder_profile_pic"))*/
     }
 }
 
 extension Date {
-          func timeAgoDisplay() -> String {
+    func timeAgoDisplay() -> String {
         let secondsAgo = Int(Date().timeIntervalSince(self))
-
+        
         let minute = 60
         let hour = 60 * minute
         let day = 24 * hour
         let week = 7 * day
-
+        
         if secondsAgo < minute {
-            return "\(secondsAgo) sec ago"
+            return "posted \(secondsAgo) sec ago"
         } else if secondsAgo < hour {
-            return "\(secondsAgo / minute) min ago"
+            return "posted \(secondsAgo / minute) min ago"
         } else if secondsAgo < day {
-            return "\(secondsAgo / hour) hrs ago"
+            return "posted \(secondsAgo / hour) hrs ago"
         } else if secondsAgo < week {
-            return "\(secondsAgo / day) days ago"
+            return "posted \(secondsAgo / day) days ago"
         }
-
-        return "\(secondsAgo / week) weeks ago"
+        
+        return "posted \(secondsAgo / week) weeks ago"
     }
 }
 

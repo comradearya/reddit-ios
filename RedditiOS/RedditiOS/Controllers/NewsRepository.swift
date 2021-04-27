@@ -15,20 +15,45 @@ final class NewsRepository {
     private var news: [NewsForView] = []
     private var dataTask: URLSessionDataTask?
     private let defaultSession = URLSession(configuration: .default)
+    private var infoElements : PageInfo = (firstId: "", lastId: "")
     
     //MARK:- Private Methods
     
-    private func stringUrl() -> String {
-        let stringUrl = "http://www.reddit.com/r/pics/search.json?q=news&sort=new"
-        
-        return stringUrl
+    private func stringUrl(toRefresh: Bool) -> URL {
+        var urlComponents: URLComponents {
+            var urlComponents = URLComponents()
+            urlComponents.scheme = "http"
+            urlComponents.host = "www.reddit.com"
+            urlComponents.path = "/r/memes/top.json"            
+            if toRefresh {
+                urlComponents.queryItems = [
+                    URLQueryItem(name: "sort", value: "new"),
+                    URLQueryItem(name: "t", value: "hour"),
+                    URLQueryItem(name: "limit", value: "5")]
+            }
+            else {
+                urlComponents.queryItems = [
+                    URLQueryItem(name: "after", value: "\(infoElements.lastId)"),
+                    URLQueryItem(name: "sort", value: "new"),
+                    URLQueryItem(name: "t", value: "hour"),
+                    URLQueryItem(name: "limit", value: "5")
+                ]
+            }
+            return urlComponents
+        }
+        print(urlComponents.url!)
+        return (urlComponents.url)!
     }
+    
     
     //MARK:- API Methods
     
-    func fetchNewsList(onCompletion: @escaping ([NewsForView]) -> ()) {
+    func loadData(needToRefresh: Bool = true, onCompletion: @escaping (Swift.Result<[NewsForView], Error>) -> Void) {
         dataTask?.cancel()
-        guard let url = URL(string: stringUrl()) else { return }
+        let url = stringUrl(toRefresh: needToRefresh)
+        if needToRefresh {
+            self.news.removeAll()
+        }
         let task = defaultSession.dataTask(with: url) { data, response, errror in
             guard let httpResponse = response as? HTTPURLResponse,
                   (200...299).contains(httpResponse.statusCode) else {
@@ -43,23 +68,31 @@ final class NewsRepository {
                 let decoder = JSONDecoder()
                 do {
                     let news = try decoder.decode(News.self, from: data!)
-                    for news in news.data.children {
+                    for newsElement in news.data.children {
                         let newsForView = NewsForView (
-                            title: news.data.title,
-                            newsDescription: news.data.selftext,
-                            created: Date(timeIntervalSince1970: news.data.created),
-                            author: news.data.author,
-                            numberOfComments: news.data.num_comments)
+                            title: newsElement.data.title,
+                            newsDescription: newsElement.data.selftext,
+                            created: self.formateDate(dateCreated: Double(newsElement.data.created)),
+                            author: newsElement.data.authorFullname,
+                            numberOfComments: newsElement.data.numComments,
+                            imageUrl: newsElement.data .preview.images.first?.source.url ?? "")
                         self.news.append(newsForView)
                     }
-                    DispatchQueue.main.async {
-                        onCompletion(self.news)
-                    }
+                    self.infoElements.lastId = news.data.after
+                    onCompletion(Swift.Result.success(self.news))
                 } catch {
                     print(error.localizedDescription)
+                    onCompletion(Swift.Result.failure(error))
                 }
             }
         }
         task.resume()
     }
+    
+    private func formateDate(dateCreated: Double) -> Date {
+        let timezoneEpochOffset = (dateCreated - 28800)
+        return Date(timeIntervalSince1970: timezoneEpochOffset)
+    }
 }
+
+
