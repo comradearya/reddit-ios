@@ -15,6 +15,8 @@
 		C026319526375067003F7D09 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C026319426375067003F7D09 /* NetworkManager.swift */; };
 		C02631A9263846DE003F7D09 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02631A8263846DE003F7D09 /* DetailsViewController.swift */; };
 		C02631BD26394222003F7D09 /* DetailsViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02631BC26394222003F7D09 /* DetailsViewController+Extension.swift */; };
+		C02631D826396F68003F7D09 /* CoreHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02631D726396F67003F7D09 /* CoreHelper.swift */; };
+		C02631E62639875B003F7D09 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02631E52639875B003F7D09 /* Array+Extension.swift */; };
 		C05DDD572634383700E71A07 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05DDD562634383700E71A07 /* AppDelegate.swift */; };
 		C05DDD592634383700E71A07 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05DDD582634383700E71A07 /* SceneDelegate.swift */; };
 		C05DDD5B2634383700E71A07 /* NewsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05DDD5A2634383700E71A07 /* NewsListViewController.swift */; };
@@ -57,6 +59,8 @@
 		C026319426375067003F7D09 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		C02631A8263846DE003F7D09 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		C02631BC26394222003F7D09 /* DetailsViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailsViewController+Extension.swift"; sourceTree = "<group>"; };
+		C02631D726396F67003F7D09 /* CoreHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreHelper.swift; sourceTree = "<group>"; };
+		C02631E52639875B003F7D09 /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 		C05DDD532634383700E71A07 /* RedditiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RedditiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C05DDD562634383700E71A07 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C05DDD582634383700E71A07 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -116,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				C026316F263741F4003F7D09 /* TypeAlias.swift */,
+				C02631D726396F67003F7D09 /* CoreHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -124,6 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				C026317D26374AAA003F7D09 /* UIView.swift */,
+				C02631E52639875B003F7D09 /* Array+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -364,6 +370,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C02631D826396F68003F7D09 /* CoreHelper.swift in Sources */,
 				C026317E26374AAA003F7D09 /* UIView.swift in Sources */,
 				C05DDD5B2634383700E71A07 /* NewsListViewController.swift in Sources */,
 				C02631BD26394222003F7D09 /* DetailsViewController+Extension.swift in Sources */,
@@ -374,6 +381,7 @@
 				C026316A263740CE003F7D09 /* NewsListViewController+Delegate.swift in Sources */,
 				C02631A9263846DE003F7D09 /* DetailsViewController.swift in Sources */,
 				C05DDD572634383700E71A07 /* AppDelegate.swift in Sources */,
+				C02631E62639875B003F7D09 /* Array+Extension.swift in Sources */,
 				C05DDDA7263438ED00E71A07 /* News.swift in Sources */,
 				C05DDD592634383700E71A07 /* SceneDelegate.swift in Sources */,
 				C026314826373CA8003F7D09 /* Configuration.swift in Sources */,

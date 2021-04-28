@@ -6,11 +6,10 @@
 //
 
 import Foundation
+import UIKit
 
-typealias PageInfo = (firstId: String, lastId: String)   //currentPage: == -1 represent, no page loaded.
+typealias PostImageInfo = (title: String, image: UIImage) 
 
 typealias Parameters = [String:String]
-
-//typealias PostInfo = (url: String, name: ManufacturerName)
 
 

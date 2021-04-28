@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import CoreData
+import UIKit
 
 final class NewsRepository {
     
@@ -15,7 +17,7 @@ final class NewsRepository {
     private var news: [NewsForView] = []
     private var dataTask: URLSessionDataTask?
     private let defaultSession = URLSession(configuration: .default)
-    private var infoElements : PageInfo = (firstId: "", lastId: "")
+    private var lastElementId = String()
     
     //MARK:- Private Methods
     
@@ -33,7 +35,7 @@ final class NewsRepository {
             }
             else {
                 urlComponents.queryItems = [
-                    URLQueryItem(name: "after", value: "\(infoElements.lastId)"),
+                    URLQueryItem(name: "after", value: "\(lastElementId)"),
                     URLQueryItem(name: "sort", value: "new"),
                     URLQueryItem(name: "t", value: "hour"),
                     URLQueryItem(name: "limit", value: "5")
@@ -54,10 +56,12 @@ final class NewsRepository {
         if needToRefresh {
             self.news.removeAll()
         }
-        let task = defaultSession.dataTask(with: url) { data, response, errror in
+        let task = defaultSession.dataTask(with: url) { data, response, error in
             guard let httpResponse = response as? HTTPURLResponse,
                   (200...299).contains(httpResponse.statusCode) else {
-                // self.handleServerError(response)
+                DispatchQueue.main.async {
+                    onCompletion(Swift.Result.failure(error!))
+                }
                 return
             }
             guard let mime = response?.mimeType, mime == "application/json" else {
@@ -80,7 +84,7 @@ final class NewsRepository {
                             )
                         self.news.append(newsForView)
                     }
-                    self.infoElements.lastId = news.data.after
+                    self.lastElementId = news.data.after
                     DispatchQueue.main.async {
                         onCompletion(Swift.Result.success(self.news))
                     }

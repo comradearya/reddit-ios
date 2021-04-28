@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 class NewsListViewController: UIViewController {
     
@@ -55,6 +56,8 @@ extension NewsListViewController {
         let retryAction = UIAlertAction(title: "Повторити ще раз", style: .default) { [weak self] _ in
             self?.loadData()
         }
+        let okAction = UIAlertAction(title: "Зрозуміло", style: .cancel)
+        alertController.addAction(okAction)
         alertController.addAction(retryAction)
         present(alertController, animated: true, completion: nil)
     }   
@@ -68,6 +71,7 @@ extension NewsListViewController {
             [weak self] result in
             switch result{
             case .success(let fetchedNews):
+                CoreHelper.savePosts(posts: fetchedNews)
                 self?.newsList = fetchedNews
             case .failure(let error):
                 self?.showErrorAlert(with: error.localizedDescription)
