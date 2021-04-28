@@ -88,6 +88,7 @@
                                             <outlet property="cellCreatedLabel" destination="fiU-N5-wSV" id="fFO-fn-7jb"/>
                                             <outlet property="cellDescriptionLabel" destination="XC9-RY-z8D" id="fNy-Qs-oJg"/>
                                             <outlet property="cellTitleLabel" destination="w42-Rf-OiN" id="Rmn-3H-nnJ"/>
+                                            <segue destination="ck1-70-bDI" kind="show" id="dEt-bZ-LH7"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -122,6 +123,22 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-111.59420289855073" y="60.267857142857139"/>
+        </scene>
+        <!--Details View Controller-->
+        <scene sceneID="lut-tV-Wed">
+            <objects>
+                <viewController storyboardIdentifier="DetailsVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ck1-70-bDI" customClass="DetailsViewController" customModule="RedditiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="D0b-Fj-M7n">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="A0B-ri-k2d"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="6BT-DJ-Rn4"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NIl-V3-iRp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="774" y="60"/>
         </scene>
     </scenes>
     <resources>

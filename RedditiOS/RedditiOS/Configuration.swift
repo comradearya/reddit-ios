@@ -10,7 +10,7 @@ import UIKit
 
 struct Configuration {
     
-    static let url      = "http://www.reddit.com/r/all/new.json"
+    static let url      = "http://www.reddit.com"
 
     static let limit = 15
     
