@@ -34,6 +34,8 @@ extension NewsListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let post = newsList?[indexPath.row] else { return }
+        pushDetailsScene(with: post.postUrl)
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }

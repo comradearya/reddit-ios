@@ -11,3 +11,6 @@ typealias PageInfo = (firstId: String, lastId: String)   //currentPage: == -1 re
 
 typealias Parameters = [String:String]
 
+//typealias PostInfo = (url: String, name: ManufacturerName)
+
+

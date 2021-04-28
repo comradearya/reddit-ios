@@ -49,7 +49,6 @@ extension NewsListViewController {
     // MARK: - Alerts
     
     private func showErrorAlert(with message: String) {
-        
         let alertController = UIAlertController(title: "Error",
                                                 message: message,
                                                 preferredStyle: .alert)
@@ -58,7 +57,6 @@ extension NewsListViewController {
             self?.loadData()
         }
         alertController.addAction(retryAction)
-        
         present(alertController, animated: true, completion: nil)
     }
     
@@ -74,12 +72,30 @@ extension NewsListViewController {
             case .success(let fetchedNews):
                 self?.newsList = fetchedNews
             case .failure(let error):
-                print(error)
+                self?.showErrorAlert(with: error.localizedDescription)
             }
             DispatchQueue.main.async {
                 self?.newsTableView.tableFooterView = nil
                 self?.newsTableView.reloadData()
             }
         }
+    }
+    
+    // MARK: - Navigation
+    
+    internal func pushDetailsScene(with postPermalink: String) {
+       /* guard let detailsVC = Navigation.getViewController(
+                type: DetailsViewController.self,
+                identifer: "DetailsVC")
+        
+        else { return }
+        detailsVC.postUrl = Configuration.url + postPermalink
+        print (detailsVC.postUrl)
+       
+        navigationController?.pushViewController(detailsVC, animated: true)
+        */
+        let url = Configuration.url + postPermalink
+            let userInfo = ["link" : url]
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "notificationName"), object: nil, userInfo: userInfo)
     }
 }

@@ -14,4 +14,5 @@ struct NewsForView {
     let author: String
     let numberOfComments: Int
     let imageUrl: String
+    let postUrl: String
 }
