@@ -171,7 +171,7 @@ extension Child {
 // MARK: - ChildData
 struct ChildData: Codable {
     let selftext, title: String
-    let thumbnail: String
+    let thumbnail: String?
     let numComments: Int
     let authorFullname: String
     let created: Int

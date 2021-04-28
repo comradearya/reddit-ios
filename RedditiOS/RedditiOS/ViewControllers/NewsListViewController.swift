@@ -10,10 +10,9 @@ import UIKit
 class NewsListViewController: UIViewController {
     
     @IBOutlet weak var newsTableView: UITableView!
-        
+    
     //MARK: - Properties
     
-    internal let identifier = "newsCell"
     internal var newsList : [NewsForView]?
     var refreshControl = UIRefreshControl()
     private var observer: NSObjectProtocol?
@@ -49,21 +48,20 @@ extension NewsListViewController {
     // MARK: - Alerts
     
     private func showErrorAlert(with message: String) {
-        let alertController = UIAlertController(title: "Error",
+        let alertController = UIAlertController(title: "Упс",
                                                 message: message,
                                                 preferredStyle: .alert)
         
-        let retryAction = UIAlertAction(title: "Retry", style: .default) { [weak self] _ in
+        let retryAction = UIAlertAction(title: "Повторити ще раз", style: .default) { [weak self] _ in
             self?.loadData()
         }
         alertController.addAction(retryAction)
         present(alertController, animated: true, completion: nil)
-    }
-    
-    
+    }   
 }
 
 //MARK: - Data Methods
+
 extension NewsListViewController {
     internal func loadData(needToRefresh: Bool = false) {
         NewsRepository.shared.loadData(needToRefresh: needToRefresh){
@@ -74,28 +72,16 @@ extension NewsListViewController {
             case .failure(let error):
                 self?.showErrorAlert(with: error.localizedDescription)
             }
-            DispatchQueue.main.async {
-                self?.newsTableView.tableFooterView = nil
-                self?.newsTableView.reloadData()
-            }
+            self?.newsTableView.tableFooterView = nil
+            self?.newsTableView.reloadData()
         }
     }
     
     // MARK: - Navigation
     
     internal func pushDetailsScene(with postPermalink: String) {
-       /* guard let detailsVC = Navigation.getViewController(
-                type: DetailsViewController.self,
-                identifer: "DetailsVC")
-        
-        else { return }
-        detailsVC.postUrl = Configuration.url + postPermalink
-        print (detailsVC.postUrl)
-       
-        navigationController?.pushViewController(detailsVC, animated: true)
-        */
         let url = Configuration.url + postPermalink
-            let userInfo = ["link" : url]
+        let userInfo = ["link" : url]
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "notificationName"), object: nil, userInfo: userInfo)
     }
 }

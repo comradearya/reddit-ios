@@ -75,16 +75,20 @@ final class NewsRepository {
                             created: self.formateDate(dateCreated: Double(newsElement.data.created)),
                             author: newsElement.data.authorFullname,
                             numberOfComments: newsElement.data.numComments,
-                            imageUrl: newsElement.data.thumbnail ,
+                            imageUrl: newsElement.data.thumbnail ?? "",
                             postUrl: newsElement.data.permalink
                             )
                         self.news.append(newsForView)
                     }
                     self.infoElements.lastId = news.data.after
-                    onCompletion(Swift.Result.success(self.news))
+                    DispatchQueue.main.async {
+                        onCompletion(Swift.Result.success(self.news))
+                    }
                 } catch {
                     print(error.localizedDescription)
-                    onCompletion(Swift.Result.failure(error))
+                    DispatchQueue.main.async {
+                        onCompletion(Swift.Result.failure(error))
+                    }
                 }
             }
         }
