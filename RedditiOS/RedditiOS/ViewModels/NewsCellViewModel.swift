@@ -5,8 +5,8 @@
 //  Created by orpan on 24.04.2021.
 //
 
-import Foundation
 import UIKit
+import CoreData
 
 class NewsCellViewModel: UITableViewCell{
     
@@ -22,12 +22,13 @@ class NewsCellViewModel: UITableViewCell{
     //MARK: - Public Methods
     
     func configureCell(item: NewsForView){
-        cellTitleLabel.text = item.title
-        cellDescriptionLabel.text = item.newsDescription
-        cellAuthorLabel.text = "Автор \(item.author)"
-        cellCreatedLabel.text = item.created.timeAgoDisplay()
-        cellCommentsLabel.text = "Коментарі: \(String(item.numberOfComments))"
         DispatchQueue.main.async {
+            self.cellTitleLabel.text = item.title
+            self.cellDescriptionLabel.text = item.newsDescription
+            self.cellAuthorLabel.text = "Автор \(item.author)"
+            self.cellCreatedLabel.text = item.created.timeAgoDisplay()
+            self.cellCommentsLabel.text = "Коментарі: \(String(item.numberOfComments))"
+       
             ImageController.shared.downloadImage(
                 with: item.imageUrl,
                 completionHandler :{
@@ -36,14 +37,12 @@ class NewsCellViewModel: UITableViewCell{
                 placeholderImage: UIImage(
                     named: "placeholder_profile_pic"))
         }
-        
     }
 }
 
 extension Date {
     func timeAgoDisplay() -> String {
         let secondsAgo = Int(Date().timeIntervalSince(self))
-        
         let minute = 60
         let hour = 60 * minute
         let day = 24 * hour
@@ -58,7 +57,6 @@ extension Date {
         } else if secondsAgo < week {
             return "\(secondsAgo / day) дн"
         }
-        
         return "\(secondsAgo / week) тижд"
     }
 }

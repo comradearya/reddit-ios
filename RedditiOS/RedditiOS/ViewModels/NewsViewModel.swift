@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct NewsForView {
-    let title: String
-    let newsDescription: String
-    let created: Date
-    let author: String
-    let numberOfComments: Int
-    let imageUrl: String
-    let postUrl: String
+public struct NewsForView: Hashable {
+    var title: String
+    var newsDescription: String
+    var created: Date
+    var author: String
+    var numberOfComments: Int
+    var imageUrl: String
+    var postUrl: String
 }

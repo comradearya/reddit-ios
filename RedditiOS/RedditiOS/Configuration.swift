@@ -24,6 +24,8 @@ struct Configuration {
     }
     
     static let newsCellIdentifier = "newsCell"
+    
+    static let postEntityName = "Post"
 
 }
 
