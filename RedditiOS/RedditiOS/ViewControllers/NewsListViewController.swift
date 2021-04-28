@@ -8,7 +8,7 @@
 import UIKit
 
 class NewsListViewController: UIViewController {
-    
+
     @IBOutlet weak var newsTableView: UITableView!
         
     //MARK: - Properties
@@ -84,16 +84,6 @@ extension NewsListViewController {
     // MARK: - Navigation
     
     internal func pushDetailsScene(with postPermalink: String) {
-       /* guard let detailsVC = Navigation.getViewController(
-                type: DetailsViewController.self,
-                identifer: "DetailsVC")
-        
-        else { return }
-        detailsVC.postUrl = Configuration.url + postPermalink
-        print (detailsVC.postUrl)
-       
-        navigationController?.pushViewController(detailsVC, animated: true)
-        */
         let url = Configuration.url + postPermalink
             let userInfo = ["link" : url]
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "notificationName"), object: nil, userInfo: userInfo)

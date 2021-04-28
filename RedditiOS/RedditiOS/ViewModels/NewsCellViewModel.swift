@@ -16,8 +16,8 @@ class NewsCellViewModel: UITableViewCell{
     @IBOutlet var cellTitleLabel: UILabel!
     @IBOutlet var cellDescriptionLabel: UILabel!
     @IBOutlet var cellCreatedLabel: UILabel!
+    @IBOutlet weak var postImageView: UIImageView!
     @IBOutlet var cellCommentsLabel: UILabel!
-    private let imageIconView = UIImageView()
     
     //MARK: - Public Methods
     
@@ -27,13 +27,14 @@ class NewsCellViewModel: UITableViewCell{
         cellAuthorLabel.text = "Author \(item.author)"
         cellCreatedLabel.text = item.created.timeAgoDisplay()
         cellCommentsLabel.text = "Comments: \(String(item.numberOfComments))"
-       /* ImageController.shared.downloadImage(
+    
+        ImageController.shared.downloadImage(
             with: item.imageUrl,
             completionHandler :{
                 (image, cached) in
-                self.imageIconView.image = image },
+                self.postImageView.image = image },
             placeholderImage: UIImage(
-                named: "placeholder_profile_pic"))*/
+                named: "placeholder_profile_pic"))
     }
 }
 
