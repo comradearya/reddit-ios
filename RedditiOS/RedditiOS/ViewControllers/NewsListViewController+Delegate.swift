@@ -10,7 +10,6 @@ import UIKit
 extension NewsListViewController: UIScrollViewDelegate {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let bottomEdge = scrollView.contentOffset.y + scrollView.frame.height
-        
         if bottomEdge >= scrollView.contentSize.height {
             loadData()
         }
@@ -24,10 +23,11 @@ extension NewsListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? NewsCellViewModel {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: Configuration.newsCellIdentifier,
+                                                    for: indexPath) as? NewsCellViewModel {
             if let cellObj = newsList?[indexPath.row] {
-            cell.configureCell(item: cellObj)
-            return cell
+                cell.configureCell(item: cellObj)
+                return cell
             }
         }
         return UITableViewCell()

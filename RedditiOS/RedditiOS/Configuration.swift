@@ -22,6 +22,9 @@ struct Configuration {
             """)
         }
     }
+    
+    static let newsCellIdentifier = "newsCell"
+
 }
 
 struct UIConfiguration {

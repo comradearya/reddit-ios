@@ -14,8 +14,8 @@ final class ImageController {
     private var cachedImages: [String: UIImage]
     private var imagesDownloadTasks: [String: URLSessionDataTask]
     
-    let serialQueueForImages = DispatchQueue(label: "images.queue", attributes: .concurrent)
-    let serialQueueForDataTasks = DispatchQueue(label: "dataTasks.queue", attributes: .concurrent)
+    private let serialQueueForImages = DispatchQueue(label: "images.queue", attributes: .concurrent)
+    private let serialQueueForDataTasks = DispatchQueue(label: "dataTasks.queue", attributes: .concurrent)
     
     
     // MARK:- Private init

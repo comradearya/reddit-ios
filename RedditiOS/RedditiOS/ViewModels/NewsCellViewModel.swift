@@ -24,17 +24,19 @@ class NewsCellViewModel: UITableViewCell{
     func configureCell(item: NewsForView){
         cellTitleLabel.text = item.title
         cellDescriptionLabel.text = item.newsDescription
-        cellAuthorLabel.text = "Author \(item.author)"
+        cellAuthorLabel.text = "Автор \(item.author)"
         cellCreatedLabel.text = item.created.timeAgoDisplay()
-        cellCommentsLabel.text = "Comments: \(String(item.numberOfComments))"
-    
-        ImageController.shared.downloadImage(
-            with: item.imageUrl,
-            completionHandler :{
-                (image, cached) in
-                self.postImageView.image = image },
-            placeholderImage: UIImage(
-                named: "placeholder_profile_pic"))
+        cellCommentsLabel.text = "Коментарі: \(String(item.numberOfComments))"
+        DispatchQueue.main.async {
+            ImageController.shared.downloadImage(
+                with: item.imageUrl,
+                completionHandler :{
+                    (image, cached) in
+                    self.postImageView.image = image },
+                placeholderImage: UIImage(
+                    named: "placeholder_profile_pic"))
+        }
+        
     }
 }
 
@@ -48,16 +50,16 @@ extension Date {
         let week = 7 * day
         
         if secondsAgo < minute {
-            return "posted \(secondsAgo) sec ago"
+            return "\(secondsAgo) сек"
         } else if secondsAgo < hour {
-            return "posted \(secondsAgo / minute) min ago"
+            return "\(secondsAgo / minute) хв"
         } else if secondsAgo < day {
-            return "posted \(secondsAgo / hour) hrs ago"
+            return "\(secondsAgo / hour) год"
         } else if secondsAgo < week {
-            return "posted \(secondsAgo / day) days ago"
+            return "\(secondsAgo / day) дн"
         }
         
-        return "posted \(secondsAgo / week) weeks ago"
+        return "\(secondsAgo / week) тижд"
     }
 }
 
