@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreData
+import Combine
 
 class NewsListViewController: UIViewController {
     
@@ -23,16 +24,8 @@ class NewsListViewController: UIViewController {
         super.viewDidLoad()
         newsTableView.delegate = self
         newsTableView.dataSource = self
-        
-        refreshControl.attributedTitle = NSAttributedString(string: "Оновлюємо")
-        refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
-        newsTableView.addSubview(refreshControl)
-        
-        observer = NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: nil) { [unowned self] notification in
-            loadData()
-        }
-        newsTableView.estimatedRowHeight = 70
-        newsTableView.rowHeight = UITableView.automaticDimension
+        configureView()
+        abilityToSaveImage()
     }
 }
 
@@ -44,6 +37,61 @@ extension NewsListViewController {
         loadData(needToRefresh: true)
         refreshControl.endRefreshing()
         self.newsTableView.reloadData()
+    }
+    
+    private func configureView(){
+        refreshControl.attributedTitle = NSAttributedString(string: "Оновлюємо")
+        refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
+        newsTableView.addSubview(refreshControl)
+        
+        observer = NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: nil) { [unowned self] notification in
+            loadData()
+        }
+        newsTableView.estimatedRowHeight = 70
+        newsTableView.rowHeight = UITableView.automaticDimension
+    }
+    
+    private func abilityToSaveImage(){
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(sender:)))
+        newsTableView.addGestureRecognizer(longPress)
+    }
+    
+    @objc private func handleLongPress(sender: UILongPressGestureRecognizer){
+        if sender.state == .began {
+            if let indexPath = newsTableView.indexPathForRow(at: sender.location(in: newsTableView)) {
+                if let cellObj = newsList?[indexPath.row] {
+                    loadImage(for: cellObj).sink {
+                        [unowned self] image in
+                        self.imageTapped(image!)
+                        UIImageWriteToSavedPhotosAlbum(image!, nil, nil, nil)
+                    }
+                }
+            }
+        }
+    }
+    
+    func imageTapped(_ image: UIImage){
+            let newImageView = UIImageView(image: image)
+            newImageView.frame = UIScreen.main.bounds
+            newImageView.backgroundColor = .black
+            newImageView.contentMode = .scaleAspectFit
+            newImageView.isUserInteractionEnabled = true
+            let tap = UITapGestureRecognizer(target: self, action: #selector(dismissFullscreenImage))
+            newImageView.addGestureRecognizer(tap)
+           // self.view.addSubview(newImageView)
+            self.view.addSubview(newImageView)
+
+    }
+    
+    @objc func dismissFullscreenImage(_ sender: UITapGestureRecognizer) {
+        self.navigationController?.isNavigationBarHidden = false
+        self.tabBarController?.tabBar.isHidden = false
+        sender.view?.removeFromSuperview()
+    }
+    
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
     }
     
     // MARK: - Alerts
@@ -60,7 +108,16 @@ extension NewsListViewController {
         alertController.addAction(okAction)
         alertController.addAction(retryAction)
         present(alertController, animated: true, completion: nil)
-    }   
+    }
+    
+    private func loadImage(for postItem: NewsForView) -> AnyPublisher<UIImage?, Never> {
+        return Just(postItem.imageUrl)
+            .flatMap({ poster -> AnyPublisher<UIImage?, Never> in
+                let url = URL(string: postItem.imageUrl)!
+                return ImageLoader.shared.loadImage(from: url)
+            })
+            .eraseToAnyPublisher()
+    }
 }
 
 //MARK: - Data Methods
