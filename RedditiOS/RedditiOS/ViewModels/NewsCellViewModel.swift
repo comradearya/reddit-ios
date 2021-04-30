@@ -40,7 +40,7 @@ public class NewsCellViewModel: UITableViewCell{
         self.cellAuthorLabel.text = "Автор \(item.author)"
         self.cellCreatedLabel.text = item.created.timeAgoDisplay()
         self.cellCommentsLabel.text = "Коментарі: \(String(item.numberOfComments))"
-        self.cancellable = ImageLoader.loadImage(item).sink(receiveValue: {
+        self.cancellable = ImageLoader.loadImage(item.imageUrl).sink(receiveValue: {
             [weak self] image in
            self!.postImageView.image = image
         })

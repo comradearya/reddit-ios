@@ -40,10 +40,10 @@ public final class ImageLoader {
             .eraseToAnyPublisher()
     }
     
-    static public func loadImage(_ postItem: NewsForView) -> AnyPublisher<UIImage?, Never> {
-        return Just(postItem.imageUrl)
+    static public func loadImage(_ postItemImage: String) -> AnyPublisher<UIImage?, Never> {
+        return Just(postItemImage)
             .flatMap({ poster -> AnyPublisher<UIImage?, Never> in
-                let url = URL(string: postItem.imageUrl)!
+                let url = URL(string: postItemImage)!
                 return ImageLoader.shared.loadImage(from: url)
             })
             .eraseToAnyPublisher()
