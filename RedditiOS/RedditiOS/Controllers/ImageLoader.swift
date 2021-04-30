@@ -10,8 +10,11 @@ import UIKit.UIImage
 import Combine
 
 public final class ImageLoader {
+    
+    //MARK: - Public Properties
     public static let shared = ImageLoader()
-
+    
+    //MARK: - Private Properties
     private let cache: ImageCacheType
     private lazy var backgroundQueue: OperationQueue = {
         let queue = OperationQueue()
@@ -22,6 +25,8 @@ public final class ImageLoader {
     public init(cache: ImageCacheType = ImageCache()) {
         self.cache = cache
     }
+
+    //MARK: - Private Methodes
 
     private func loadImage(from url: URL) -> AnyPublisher<UIImage?, Never> {
         if let image = cache[url] {
@@ -40,6 +45,8 @@ public final class ImageLoader {
             .eraseToAnyPublisher()
     }
     
+    //MARK: - Public Methodes
+
     static public func loadImage(_ postItemImage: String) -> AnyPublisher<UIImage?, Never> {
         return Just(postItemImage)
             .flatMap({ poster -> AnyPublisher<UIImage?, Never> in

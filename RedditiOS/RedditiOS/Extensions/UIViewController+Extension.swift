@@ -27,21 +27,21 @@ extension UIViewController {
                                       preferredStyle: .actionSheet)
         switch type {
         case .saveImage:
-            alert.title = "Зображення"
-            let action = UIAlertAction(title: "Зберігти", style: .default) { _ in
+            alert.title = Localization.Alert.Title.save
+            let saveAction = UIAlertAction(title: Localization.Alert.Button.save, style: .default) { _ in
                 actionHandler()
             }
-            alert.addAction(action)
+            alert.addAction(saveAction)
             
         case .noInternet:
-            alert.title = "Упс!"
-            alert.message = "Нема звязку"
-            let action = UIAlertAction(title: "Перезавантажити", style: .default) {_ in
+            alert.title = Localization.Alert.Title.network
+            alert.message = Localization.Alert.Message.network
+            let reloadAction = UIAlertAction(title:Localization.Alert.Button.reload, style: .default) {_ in
                 actionHandler()
             }
-            alert.addAction(action)
+            alert.addAction(reloadAction)
         }
-        let cancelAction = UIAlertAction(title: "Назад", style: .cancel)
+        let cancelAction = UIAlertAction(title: Localization.Alert.Button.cancel, style: .cancel)
         alert.addAction(cancelAction)
         
         self.present(alert, animated: true, completion: nil)

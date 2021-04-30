@@ -22,7 +22,7 @@ public class NewsCellViewModel: UITableViewCell{
     @IBOutlet var cellCommentsLabel: UILabel!
     private var cancellable: AnyCancellable?
     private var animator: UIViewPropertyAnimator?
-
+    
     override public func prepareForReuse() {
         super.prepareForReuse()
         animator?.stopAnimation(true)
@@ -31,18 +31,18 @@ public class NewsCellViewModel: UITableViewCell{
     }
     
     public override func layoutSubviews() {
-         super.layoutSubviews()
-      }
+        super.layoutSubviews()
+    }
     
     func configureCell(item: NewsForView){
-        self.cellTitleLabel.text = item.title
-        self.cellDescriptionLabel.text = item.newsDescription
-        self.cellAuthorLabel.text = "Автор \(item.author)"
-        self.cellCreatedLabel.text = item.created.timeAgoDisplay()
-        self.cellCommentsLabel.text = "Коментарі: \(String(item.numberOfComments))"
         self.cancellable = ImageLoader.loadImage(item.imageUrl).sink(receiveValue: {
             [weak self] image in
-           self!.postImageView.image = image
+            self?.cellTitleLabel.text = item.title
+            self?.cellDescriptionLabel.text = item.newsDescription
+            self?.cellAuthorLabel.text = "Автор \(item.author)"
+            self?.cellCreatedLabel.text = item.created.timeAgoDisplay()
+            self?.cellCommentsLabel.text = "Коментарі: \(String(item.numberOfComments))"
+            self!.postImageView.image = image
         })
         self.animator?.stopAnimation(true)
     }
