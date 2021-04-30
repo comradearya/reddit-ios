@@ -15,7 +15,7 @@ class NewsListViewController: UIViewController {
     
     //MARK: - Properties
     
-    internal var newsList : [NewsForView]?
+    internal var newsList = [NewsForView]()
     var refreshControl = UIRefreshControl()
     private var observer: NSObjectProtocol?
     
@@ -56,13 +56,15 @@ extension NewsListViewController {
     
     @objc private func handleLongPress(sender: UILongPressGestureRecognizer){
         if sender.state == .began {
-            if let indexPath = newsTableView.indexPathForRow(at: sender.location(in: newsTableView)),
-               let cellObj = newsList?[indexPath.row] {
+            if let indexPath = newsTableView.indexPathForRow(at: sender.location(in: newsTableView)){
+                let cellObj = newsList[indexPath.row]
                 ImageLoader.loadImage(cellObj).sink {[unowned self] image in
                     if let imageExists = image {
                         self.addImageSubview(imageExists)
                         self.showAlert(.saveImage, actionHandler: {
+                            
                             UIImageWriteToSavedPhotosAlbum(imageExists, nil, nil, nil)
+                            
                         })
                     }
                 }
@@ -79,10 +81,11 @@ extension NewsListViewController {
             [weak self] result in
             switch result{
             case .success(let fetchedNews):
-                CoreHelper.savePosts(posts: fetchedNews)
                 self?.newsList = fetchedNews
+                CoreHelper.savePosts(posts: fetchedNews)
             case .failure:
-                self?.showAlert(.noInternet) { 
+                self?.newsList = CoreHelper.fetchPosts()
+                self?.showAlert(.noInternet) {
                     self?.loadData()
                 }
             }
