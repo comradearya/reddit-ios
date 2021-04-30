@@ -20,11 +20,11 @@
                                 <rect key="frame" x="0.0" y="74" width="414" height="822"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="newsCell" rowHeight="359" id="RZ7-Lc-Ybi" customClass="NewsCellViewModel" customModule="RedditiOS" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="24.5" width="414" height="359"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="newsCell" id="RZ7-Lc-Ybi" customClass="NewsCellViewModel" customModule="RedditiOS" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="24.5" width="414" height="131"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="TopLeft" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RZ7-Lc-Ybi" id="WIS-K3-xN7">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="359"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="131"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w42-Rf-OiN">
@@ -56,10 +56,10 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WOg-5A-Bme">
-                                                    <rect key="frame" x="87" y="88.5" width="240" height="228.5"/>
+                                                    <rect key="frame" x="87" y="88.5" width="240" height="0.5"/>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="N comments" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P8e-gh-e7k">
-                                                    <rect key="frame" x="20" y="327" width="97" height="21"/>
+                                                    <rect key="frame" x="20" y="99" width="97" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
