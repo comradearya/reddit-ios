@@ -10,13 +10,17 @@ import UIKit
 
 struct NetworkConfiguration {
     
-    static let url      = "http://www.reddit.com"
+    static let scheme = "http"
+    
+    static let hostUrl = "www.reddit.com"
+    
+    static let pathUrl = "/r/memes/top.json"
 
     static let limit = 15
     
     static func checkConfiguration() {
         
-        if url.isEmpty || limit < 0 {
+        if hostUrl.isEmpty || limit < 0 {
             fatalError("""
                 Invalid configuration found.
             """)

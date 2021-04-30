@@ -86,7 +86,7 @@ extension NewsListViewController {
     // MARK: - Navigation
     
     internal func pushDetailsScene(with postPermalink: String) {
-        let url = NetworkConfiguration.url + postPermalink
+        let url = NetworkConfiguration.hostUrl + postPermalink
         let userInfo = ["link" : url]
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "notificationName"), object: nil, userInfo: userInfo)
     }

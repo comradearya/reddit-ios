@@ -15,6 +15,8 @@ extension NewsListViewController: UIScrollViewDelegate {
         }
     }
 }
+ 
+//MARK: - Extension for TableView
 
 extension NewsListViewController: UITableViewDelegate, UITableViewDataSource {
     

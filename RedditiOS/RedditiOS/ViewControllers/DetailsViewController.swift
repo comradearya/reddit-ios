@@ -10,8 +10,12 @@ import WebKit
 
 class DetailsViewController : UIViewController, WKNavigationDelegate, WKUIDelegate {
     
+    //MARK: - Properties
+    
     internal var webView: WKWebView!
     
+    //MARK: - Life Cycle
+
     override func loadView() {
         let webConfiguration = WKWebViewConfiguration()
         webView = WKWebView(frame: .zero, configuration: webConfiguration)
