@@ -56,19 +56,8 @@ extension NewsListViewController {
     
     @objc private func handleLongPress(sender: UILongPressGestureRecognizer){
         if sender.state == .began {
-            if let indexPath = newsTableView.indexPathForRow(at: sender.location(in: newsTableView)){
-                let cellObj = newsList[indexPath.row]
-                ImageLoader.loadImage(cellObj).sink {[unowned self] image in
-                    if let imageExists = image {
-                        self.addImageSubview(imageExists)
-                        self.showAlert(.saveImage, actionHandler: {
-                            
-                            UIImageWriteToSavedPhotosAlbum(imageExists, nil, nil, nil)
-                            
-                        })
-                    }
-                }
-            }
+            guard let indexPath = newsTableView.indexPathForRow(at: sender.location(in: newsTableView)) else { return }
+            self.addImageSubview(newsList[indexPath.row].imageUrl)
         }
     }
 }
@@ -97,7 +86,7 @@ extension NewsListViewController {
     // MARK: - Navigation
     
     internal func pushDetailsScene(with postPermalink: String) {
-        let url = Configuration.url + postPermalink
+        let url = NetworkConfiguration.url + postPermalink
         let userInfo = ["link" : url]
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "notificationName"), object: nil, userInfo: userInfo)
     }

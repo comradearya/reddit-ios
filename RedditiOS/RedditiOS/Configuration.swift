@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-struct Configuration {
+struct NetworkConfiguration {
     
     static let url      = "http://www.reddit.com"
 
@@ -22,14 +22,12 @@ struct Configuration {
             """)
         }
     }
+}
+
+struct Configuration {
     
     static let newsCellIdentifier = "newsCell"
     
     static let postEntityName = "Post"
 
 }
-
-struct UIConfiguration {
-    static let activityIndicatorColor = UIColor(red: 183/255, green: 21/255, blue: 64/255, alpha: 1.0)
-}
-

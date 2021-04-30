@@ -32,7 +32,7 @@ extension UIViewController {
                 actionHandler()
             }
             alert.addAction(action)
-      
+            
         case .noInternet:
             alert.title = "Упс!"
             alert.message = "Нема звязку"
@@ -50,15 +50,23 @@ extension UIViewController {
 
 
 extension UIViewController {
-    internal func addImageSubview(_ image: UIImage){
-        let newImageView = UIImageView(image: image)
-        newImageView.frame = UIScreen.main.bounds
-        newImageView.backgroundColor = .black
-        newImageView.contentMode = .scaleAspectFit
-        newImageView.isUserInteractionEnabled = true
-        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissFullscreenImage))
-        newImageView.addGestureRecognizer(tap)
-        self.view.addSubview(newImageView)
+    internal func addImageSubview(_ imageUrl: String){
+        ImageLoader.loadImage(imageUrl).sink { [unowned self]
+            image in
+            guard let imageExists = image else {return }
+            let newImageView = UIImageView(image: image)
+            newImageView.frame = UIScreen.main.bounds
+            newImageView.backgroundColor = .black
+            newImageView.contentMode = .scaleAspectFit
+            newImageView.isUserInteractionEnabled = true
+            let tap = UITapGestureRecognizer(target: self, action: #selector(dismissFullscreenImage))
+            newImageView.addGestureRecognizer(tap)
+            self.view.addSubview(newImageView)
+            
+            self.showAlert(.saveImage, actionHandler: {
+                UIImageWriteToSavedPhotosAlbum(imageExists, nil, nil, nil)
+            })
+        }
     }
     
     @objc private func dismissFullscreenImage(_ sender: UITapGestureRecognizer) {
