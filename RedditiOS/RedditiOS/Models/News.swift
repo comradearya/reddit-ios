@@ -1,17 +1,9 @@
-// This file was generated from JSON Schema using quicktype, do not modify it directly.
-// To parse the JSON, add this file to your project and do:
 //
-//   let news = try News(json)
-
+//  News.swift
+//  RedditiOS
 //
-// To read values from URLs:
+//  Created by orpan on 24.04.2021.
 //
-//   let task = URLSession.shared.newsTask(with: url) { news, response, error in
-//     if let news = news {
-//       ...
-//     }
-//   }
-//   task.resume()
 
 import Foundation
 
@@ -54,16 +46,6 @@ extension News {
         return String(data: try self.jsonData(), encoding: encoding)
     }
 }
-
-//
-// To read values from URLs:
-//
-//   let task = URLSession.shared.newsDataTask(with: url) { newsData, response, error in
-//     if let newsData = newsData {
-//       ...
-//     }
-//   }
-//   task.resume()
 
 // MARK: - NewsData
 struct NewsData: Codable {
@@ -108,16 +90,6 @@ extension NewsData {
     }
 }
 
-//
-// To read values from URLs:
-//
-//   let task = URLSession.shared.childTask(with: url) { child, response, error in
-//     if let child = child {
-//       ...
-//     }
-//   }
-//   task.resume()
-
 // MARK: - Child
 struct Child: Codable {
     let data: ChildData
@@ -157,16 +129,6 @@ extension Child {
         return String(data: try self.jsonData(), encoding: encoding)
     }
 }
-
-//
-// To read values from URLs:
-//
-//   let task = URLSession.shared.childDataTask(with: url) { childData, response, error in
-//     if let childData = childData {
-//       ...
-//     }
-//   }
-//   task.resume()
 
 // MARK: - ChildData
 struct ChildData: Codable {

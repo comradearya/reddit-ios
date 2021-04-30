@@ -18,18 +18,23 @@ extension NewsListViewController: UIScrollViewDelegate {
 
 extension NewsListViewController: UITableViewDelegate, UITableViewDataSource {
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        tableView.estimatedRowHeight = 100
+        return UITableView.automaticDimension
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.newsList?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: Configuration.newsCellIdentifier,
-                                                    for: indexPath) as? NewsCellViewModel {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: Configuration.newsCellIdentifier, for: indexPath) as? NewsCellViewModel {
             if let cellObj = newsList?[indexPath.row] {
                 cell.configureCell(item: cellObj)
-                return cell
             }
+            return cell
         }
+        
         return UITableViewCell()
     }
     

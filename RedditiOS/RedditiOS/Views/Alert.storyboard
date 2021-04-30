@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Alert Controller-->
+        <scene sceneID="s0d-6b-0kx">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <viewController storyboardIdentifier="alertIdentifier" id="Y6W-OH-hqX" customClass="AlertController" customModule="RedditiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cuQ-RE-Nh4" userLabel="Content">
+                                <rect key="frame" x="0.0" y="774" width="414" height="122"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="otR-UK-FW1">
+                                        <rect key="frame" x="121.5" y="19" width="171" height="33"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <state key="normal" title="Зберігти зображення">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="actionButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="Kta-bC-i2U"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U7u-TV-o65">
+                                        <rect key="frame" x="8" y="64" width="398" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <state key="normal" title="Subaction"/>
+                                        <connections>
+                                            <action selector="subactionButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="nqe-JD-Hgl"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="labelColor"/>
+                                <constraints>
+                                    <constraint firstItem="U7u-TV-o65" firstAttribute="top" secondItem="otR-UK-FW1" secondAttribute="bottom" constant="12" id="IRh-Dy-Qog"/>
+                                    <constraint firstItem="otR-UK-FW1" firstAttribute="centerX" secondItem="cuQ-RE-Nh4" secondAttribute="centerX" id="L9a-Ic-j6V"/>
+                                    <constraint firstItem="otR-UK-FW1" firstAttribute="top" secondItem="cuQ-RE-Nh4" secondAttribute="top" constant="19" id="Med-xc-lEf"/>
+                                    <constraint firstItem="otR-UK-FW1" firstAttribute="leading" secondItem="U7u-TV-o65" secondAttribute="trailing" constant="-284.5" id="crE-sA-Ah7"/>
+                                    <constraint firstAttribute="bottom" secondItem="U7u-TV-o65" secondAttribute="bottom" constant="28" id="uTx-On-wlp"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="cuQ-RE-Nh4" secondAttribute="bottom" id="K6z-CD-OtQ"/>
+                            <constraint firstItem="cuQ-RE-Nh4" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="VLD-15-zno"/>
+                            <constraint firstItem="cuQ-RE-Nh4" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="730" id="VQ2-sd-670"/>
+                            <constraint firstItem="cuQ-RE-Nh4" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="uJr-gC-THx"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="actionButton" destination="otR-UK-FW1" id="ZW8-GU-skr"/>
+                        <outlet property="saveImageToFileLabel" destination="cuQ-RE-Nh4" id="sT0-er-xpw"/>
+                        <outlet property="subactionButton" destination="U7u-TV-o65" id="ocD-JL-TWI"/>
+                    </connections>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="-65.217391304347828" y="22.767857142857142"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

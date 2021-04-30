@@ -23,7 +23,7 @@ public final class ImageLoader {
         self.cache = cache
     }
 
-    public func loadImage(from url: URL) -> AnyPublisher<UIImage?, Never> {
+    private func loadImage(from url: URL) -> AnyPublisher<UIImage?, Never> {
         if let image = cache[url] {
             return Just(image).eraseToAnyPublisher()
         }
@@ -36,7 +36,16 @@ public final class ImageLoader {
             })
             .print("Image loading \(url):")
             .subscribe(on: backgroundQueue)
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+    
+    static public func loadImage(_ postItem: NewsForView) -> AnyPublisher<UIImage?, Never> {
+        return Just(postItem.imageUrl)
+            .flatMap({ poster -> AnyPublisher<UIImage?, Never> in
+                let url = URL(string: postItem.imageUrl)!
+                return ImageLoader.shared.loadImage(from: url)
+            })
             .eraseToAnyPublisher()
     }
 }
