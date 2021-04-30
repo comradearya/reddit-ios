@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreData
+import Combine
 
 class NewsListViewController: UIViewController {
     
@@ -14,25 +15,16 @@ class NewsListViewController: UIViewController {
     
     //MARK: - Properties
     
-    internal var newsList : [NewsForView]?
+    internal var newsList = [NewsForView]()
     var refreshControl = UIRefreshControl()
     private var observer: NSObjectProtocol?
-    private var pageInc: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         newsTableView.delegate = self
         newsTableView.dataSource = self
-        
-        refreshControl.attributedTitle = NSAttributedString(string: "Оновлюємо")
-        refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
-        newsTableView.addSubview(refreshControl)
-        
-        observer = NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: nil) { [unowned self] notification in
-            loadData()
-        }
-        newsTableView.estimatedRowHeight = 70
-        newsTableView.rowHeight = UITableView.automaticDimension
+        configureView()
+        self.newsTableView.reloadData()
     }
 }
 
@@ -46,21 +38,39 @@ extension NewsListViewController {
         self.newsTableView.reloadData()
     }
     
-    // MARK: - Alerts
-    
-    private func showErrorAlert(with message: String) {
-        let alertController = UIAlertController(title: "Упс",
-                                                message: message,
-                                                preferredStyle: .alert)
+    private func configureView(){
+        refreshControl.attributedTitle = NSAttributedString(string: "Оновлюємо")
+        refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
+        newsTableView.addSubview(refreshControl)
         
-        let retryAction = UIAlertAction(title: "Повторити ще раз", style: .default) { [weak self] _ in
-            self?.loadData()
+        observer = NotificationCenter.default.addObserver(
+            forName: UIApplication.didBecomeActiveNotification,
+            object: nil, queue: nil) { [unowned self] notification in
+            loadData()
         }
-        let okAction = UIAlertAction(title: "Зрозуміло", style: .cancel)
-        alertController.addAction(okAction)
-        alertController.addAction(retryAction)
-        present(alertController, animated: true, completion: nil)
-    }   
+        
+        let longPress = UILongPressGestureRecognizer(target: self,
+                                                     action: #selector(handleLongPress(sender:)))
+        newsTableView.addGestureRecognizer(longPress)
+    }
+    
+    @objc private func handleLongPress(sender: UILongPressGestureRecognizer){
+        if sender.state == .began {
+            if let indexPath = newsTableView.indexPathForRow(at: sender.location(in: newsTableView)){
+                let cellObj = newsList[indexPath.row]
+                ImageLoader.loadImage(cellObj).sink {[unowned self] image in
+                    if let imageExists = image {
+                        self.addImageSubview(imageExists)
+                        self.showAlert(.saveImage, actionHandler: {
+                            
+                            UIImageWriteToSavedPhotosAlbum(imageExists, nil, nil, nil)
+                            
+                        })
+                    }
+                }
+            }
+        }
+    }
 }
 
 //MARK: - Data Methods
@@ -71,10 +81,13 @@ extension NewsListViewController {
             [weak self] result in
             switch result{
             case .success(let fetchedNews):
-                CoreHelper.savePosts(posts: fetchedNews)
                 self?.newsList = fetchedNews
-            case .failure(let error):
-                self?.showErrorAlert(with: error.localizedDescription)
+                CoreHelper.savePosts(posts: fetchedNews)
+            case .failure:
+                self?.newsList = CoreHelper.fetchPosts()
+                self?.showAlert(.noInternet) {
+                    self?.loadData()
+                }
             }
             self?.newsTableView.tableFooterView = nil
             self?.newsTableView.reloadData()

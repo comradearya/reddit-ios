@@ -7,8 +7,10 @@
 
 import UIKit
 import CoreData
+import Combine
 
-class NewsCellViewModel: UITableViewCell{
+
+public class NewsCellViewModel: UITableViewCell{
     
     //MARK: - Outlets
     
@@ -18,25 +20,31 @@ class NewsCellViewModel: UITableViewCell{
     @IBOutlet var cellCreatedLabel: UILabel!
     @IBOutlet weak var postImageView: UIImageView!
     @IBOutlet var cellCommentsLabel: UILabel!
+    private var cancellable: AnyCancellable?
+    private var animator: UIViewPropertyAnimator?
+
+    override public func prepareForReuse() {
+        super.prepareForReuse()
+        animator?.stopAnimation(true)
+        cancellable?.cancel()
+        self.postImageView.image = nil
+    }
     
-    //MARK: - Public Methods
+    public override func layoutSubviews() {
+         super.layoutSubviews()
+      }
     
     func configureCell(item: NewsForView){
-        DispatchQueue.main.async {
-            self.cellTitleLabel.text = item.title
-            self.cellDescriptionLabel.text = item.newsDescription
-            self.cellAuthorLabel.text = "Автор \(item.author)"
-            self.cellCreatedLabel.text = item.created.timeAgoDisplay()
-            self.cellCommentsLabel.text = "Коментарі: \(String(item.numberOfComments))"
-       
-            ImageController.shared.downloadImage(
-                with: item.imageUrl,
-                completionHandler :{
-                    (image, cached) in
-                    self.postImageView.image = image },
-                placeholderImage: UIImage(
-                    named: "placeholder_profile_pic"))
-        }
+        self.cellTitleLabel.text = item.title
+        self.cellDescriptionLabel.text = item.newsDescription
+        self.cellAuthorLabel.text = "Автор \(item.author)"
+        self.cellCreatedLabel.text = item.created.timeAgoDisplay()
+        self.cellCommentsLabel.text = "Коментарі: \(String(item.numberOfComments))"
+        self.cancellable = ImageLoader.loadImage(item).sink(receiveValue: {
+            [weak self] image in
+           self!.postImageView.image = image
+        })
+        self.animator?.stopAnimation(true)
     }
 }
 

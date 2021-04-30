@@ -34,11 +34,11 @@ class CoreHelper {
             print("Could not save. \(error), \(error.userInfo)")
         }
     }
-    static func fetchPosts() -> [NewsForView]? {
-        var lastFetchedPosts: [NewsForView] = []
+    static func fetchPosts() -> [NewsForView] {
+        var lastFetchedPosts = [NewsForView]()
         guard let appDelegate =
                 UIApplication.shared.delegate as? AppDelegate else {
-            return nil
+            return []
         }
         
         let managedContext =
@@ -48,8 +48,6 @@ class CoreHelper {
             NSFetchRequest<NSManagedObject>(entityName: PostEntityKeys.entityName.rawValue)
         do {
             let lastPosts = try managedContext.fetch(fetchRequest)
-            
-            
             for post in lastPosts {
                 let title = post.value(forKey: PostEntityKeys.title.rawValue) as! String
                 let descriptionPost = post.value(forKey: PostEntityKeys.postDescription.rawValue) as! String
@@ -68,21 +66,25 @@ class CoreHelper {
                     postUrl: postUrl)
                 lastFetchedPosts.append(fetchedPost)
             }
+            return lastFetchedPosts
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
-        return lastFetchedPosts
+        return []
     }
     
-    static func deleteAllData() {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let managedContext = appDelegate.persistentContainer.viewContext
-        let DelAllReqVar = NSBatchDeleteRequest(fetchRequest: NSFetchRequest<NSFetchRequestResult>(entityName: PostEntityKeys.entityName.rawValue))
+    static func deleteLastPosts() {
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        let context = delegate.persistentContainer.viewContext
+
+        let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Configuration.postEntityName)
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
+
         do {
-            try managedContext.execute(DelAllReqVar)
-        }
-        catch {
-            print(error)
+            try context.execute(deleteRequest)
+            try context.save()
+        } catch {
+            print ("There was an error")
         }
     }
     
@@ -97,3 +99,12 @@ class CoreHelper {
         case numberOfComments = "numberOfComments"
     }
 }
+
+
+extension Array where Element: Hashable {
+    func uniqued() -> [Element] {
+        var set = Set<Element>()
+        return filter { set.insert($0).inserted }
+    }
+}
+
