@@ -24,21 +24,21 @@ final class NewsRepository {
     private func stringUrl(toRefresh: Bool) -> URL {
         var urlComponents: URLComponents {
             var urlComponents = URLComponents()
-            urlComponents.scheme = "http"
-            urlComponents.host = "www.reddit.com"
-            urlComponents.path = "/r/memes/top.json"            
+            urlComponents.scheme = NetworkConfiguration.scheme
+            urlComponents.host = NetworkConfiguration.hostUrl
+            urlComponents.path = NetworkConfiguration.pathUrl
             if toRefresh {
                 urlComponents.queryItems = [
                     URLQueryItem(name: "sort", value: "new"),
                     URLQueryItem(name: "t", value: "hour"),
-                    URLQueryItem(name: "limit", value: "5")]
+                    URLQueryItem(name: "limit", value: "\(NetworkConfiguration.limit)")]
             }
             else {
                 urlComponents.queryItems = [
                     URLQueryItem(name: "after", value: "\(lastElementId)"),
                     URLQueryItem(name: "sort", value: "new"),
                     URLQueryItem(name: "t", value: "hour"),
-                    URLQueryItem(name: "limit", value: "5")
+                    URLQueryItem(name: "limit", value: "\(NetworkConfiguration.limit)")
                 ]
             }
             return urlComponents
@@ -72,18 +72,7 @@ final class NewsRepository {
                 let decoder = JSONDecoder()
                 do {
                     let news = try decoder.decode(News.self, from: data!)
-                    for newsElement in news.data.children {
-                        let newsForView = NewsForView (
-                            title: newsElement.data.title,
-                            newsDescription: newsElement.data.selftext,
-                            created: self.formateDate(dateCreated: Double(newsElement.data.created)),
-                            author: newsElement.data.authorFullname,
-                            numberOfComments: newsElement.data.numComments,
-                            imageUrl: newsElement.data.thumbnail ?? "",
-                            postUrl: newsElement.data.permalink
-                            )
-                        self.news.append(newsForView)
-                    }
+                    self.decodePosts(from: news)
                     self.lastElementId = news.data.after
                     DispatchQueue.main.async {
                         onCompletion(Swift.Result.success(self.news))
@@ -97,6 +86,26 @@ final class NewsRepository {
             }
         }
         task.resume()
+    }
+}
+
+// MARK: - Decoding Extensions
+
+extension NewsRepository {
+    
+    private func decodePosts(from news: News) {
+        for newsElement in news.data.children {
+            let newsForView = NewsForView (
+                title: newsElement.data.title,
+                newsDescription: newsElement.data.selftext,
+                created: self.formateDate(dateCreated: Double(newsElement.data.created)),
+                author: newsElement.data.authorFullname,
+                numberOfComments: newsElement.data.numComments,
+                imageUrl: newsElement.data.thumbnail ?? "",
+                postUrl: newsElement.data.permalink
+                )
+            self.news.append(newsForView)
+        }
     }
     
     private func formateDate(dateCreated: Double) -> Date {
