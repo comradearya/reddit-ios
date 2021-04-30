@@ -14,7 +14,7 @@ struct NetworkConfiguration {
     
     static let hostUrl = "www.reddit.com"
     
-    static let pathUrl = "/r/memes/top.json"
+    static let pathUrl = "/top.json"
 
     static let limit = 15
     
